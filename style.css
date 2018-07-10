@@ -1,0 +1,23 @@
+.mood {
+    margin: 4px;
+    border-radius: 8px;
+    background: #00cccc;
+    color: white;
+    text-shadow: 1px 1px #000000;
+
+}
+
+.gifs {
+    margin: 8px;
+    width: 30%;
+    height: 200px;
+}
+
+#inputDiv {
+    text-align: center;
+}
+
+#add-mood {
+    margin: 10px;
+    border-radius: 4px;
+}

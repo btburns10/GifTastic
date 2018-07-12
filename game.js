@@ -6,7 +6,6 @@ var keyID = "vB7bIhdeXTpMRzEBcPPZROeDTHQGTBGE"
 
 //displays 10 gif images of selected button
 function displayGifs() {
-    $("#gifs").empty();
     var mood = $(this).attr("data-name");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + mood + "&api_key=" + keyID + "&limit=10";
 
@@ -16,10 +15,17 @@ function displayGifs() {
     }).then(function(response) {
         console.log(queryURL);
         response.data.forEach(function(data) {
-            var gif = $("<img>")
-            .attr("src", data.images.original.url)
-            .addClass("gifs");
-            $("#gifs").append(gif);
+            var gifDiv = $("<div>");            
+            var rating = $("<p>");           
+            var gif = $("<img>");
+            gifDiv.append(rating, gif).addClass("gif-container");
+            rating.text("Rating: " + data.rating);
+            gif.attr("src", data.images.fixed_height_still.url)
+               .attr("data-still", data.images.fixed_height_still.url)
+               .attr("data-animate", data.images.fixed_height.url)
+               .attr("data-state", "still")
+               .addClass("gif");    
+            $("#gif-display").append(gifDiv);
         })
 
     })
@@ -37,8 +43,10 @@ function renderButtons() {
     });
 }
 
+//fire function on browser load to render default buttons
 renderButtons();
 
+//create event handler to run function displayGifs()
 $(document).on("click", ".mood", displayGifs);
 
 $("#add-mood").on("click", function() {
@@ -54,4 +62,23 @@ $("#add-mood").on("click", function() {
     renderButtons();
 
 });
+
+$(document).on("click", ".gif", function() {
+    var state = $(this).attr("data-state");
+
+    if(state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    }
+    else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
+   
+})
+
+//create event handler for gifs so that they are appended to div with id #favorites-div
+// $(document).on("click", ".gif-container", function() {
+//     $("#favorites-div").prepend($(this).clone());
+// })
 

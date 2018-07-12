@@ -7,14 +7,29 @@
 
 }
 
-.gifs {
-    margin: 8px;
-    width: 30%;
-    height: 200px;
+.main-container {
+    display: flex;
 }
 
-#inputDiv {
+#gif-display {
+    flex: 3;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.gif-container {
+    margin: 8px;
+}
+
+#form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+}
+
+#favorites-div {
+    font-size: 24px;
 }
 
 #add-mood {

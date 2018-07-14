@@ -120,6 +120,7 @@ $(document).on("click", ".star", function() {
 
 })
 
+//function to append favorite gifs to div with id #favorites-div
 function displayFavGifs() {
     $("#favorites-div").empty();
     favorites.forEach(function(favorite) {

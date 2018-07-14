@@ -125,7 +125,11 @@ function displayFavGifs() {
     favorites.forEach(function(favorite) {
         const gifDiv = $("<div>");
         const gif = $("<img>");
-        gifDiv.append(gif).addClass("gif-container");
+        gifDiv.append(gif).addClass("gif-container")
+            .data({
+                    still: favorite.still,
+                    animate: favorite.animate,
+                    state: favorite.state});
         gif.attr("src", favorite.still);
         $("#favorites-div").append(gifDiv);
         

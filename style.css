@@ -19,6 +19,21 @@
 
 .gif-container {
     margin: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    z-index: 2;
+    right: 2%;
+    bottom: 2%;
+    color: yellow;
+}
+
+.star:hover {
+    visibility: visible;
+    color: yellow;
 }
 
 #form-container {

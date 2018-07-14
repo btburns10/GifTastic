@@ -1,5 +1,5 @@
 //topic buttons
-var moods = ["happy", "melancholy", "angry", "ecstatic", "sad", "joyful", "confused", "overwhelmed", "loved", "inspired", "motivated", "lazy"]
+const moods = ["happy", "melancholy", "angry", "ecstatic", "sad", "joyful", "confused", "overwhelmed", "loved", "inspired", "motivated", "lazy"]
 
 //giphy api key id
 var keyID = "vB7bIhdeXTpMRzEBcPPZROeDTHQGTBGE"
@@ -7,8 +7,9 @@ var keyID = "vB7bIhdeXTpMRzEBcPPZROeDTHQGTBGE"
 //displays 10 gif images from selected button
 function displayGifs() {
     $("#gif-display").empty();
-    var mood = $(this).attr("data-name");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + mood + "&api_key=" + keyID + "&limit=10";
+
+    const mood = $(this).attr("data-name");
+    const queryURL = "https://api.giphy.com/v1/gifs/search?q=" + mood + "&api_key=" + keyID + "&limit=10";
 
     $.ajax({
         url: queryURL,
@@ -24,12 +25,11 @@ function displayGifs() {
             gifDiv.append(rating, gif, starDiv)
                   .addClass("gif-container")
                   .data({still: data.images.fixed_height_still.url,
-                    animate: data.images.fixed_height.url,
-                    state: "still",
-                    isFavorite: false});
+                        animate: data.images.fixed_height.url,
+                        state: "still",
+                        isFavorite: false});
             rating.text("Rating: " + data.rating);
-            gif.attr("src", data.images.fixed_height_still.url)
-            //    .addClass("gif");
+            gif.attr("src", data.images.fixed_height_still.url);
             starDiv.append(star).addClass("far fa-star star");
             $("#gif-display").append(gifDiv);
         })
@@ -62,7 +62,7 @@ $("#add-mood").on("click", function() {
     event.preventDefault();
 
     // Here we grab the text from the input box
-    var mood = $("#mood-input").val().trim();
+    const mood = $("#mood-input").val().trim();
 
         if(mood === "") {
             return;
@@ -93,38 +93,42 @@ $(document).on("click", ".gif-container img", function() {
    
 })
 
-//event handler to determine isFavorite
-$(document).on("click", ".star", function() {
-    console.log($(this).parent());
-    
-    var isFav = $(this).attr("isFavorite");
+var favorites = [];
 
-    if(isFav === "false") {
-        console.log("it worked");
-        $(this).attr("isFavorite", "true");
-        $(this).addClass("fas")
+//event handler for favorites logic
+$(document).on("click", ".star", function() {
+    //condition logic to establish favorites boolean
+    if($(this).parent().data("isFavorite")) {
+        $(this).parent().data("isFavorite", false);
+    }
+    else {        
+        $(this).parent().data("isFavorite", true);
+    }
+    //logic to create favorites array 
+    if($(this).parent().data("isFavorite")) {
+        $(this).addClass("fas");
+        favorites.push({still: $(this).parent().data("still"),
+                        animate: $(this).parent().data("animate"),
+                        state: $(this).parent().data("state")});
+        console.log(favorites);
+        displayFavGifs();
     }
     else {
-        $(this).attr("isFavorite", "false");
         $(this).removeClass("fas");
-        console.log("true it is");
     }
-    
-    
-    // toggleClass("far fas");
 
 
 })
 
 function displayFavGifs() {
-    //create for loop to iterate through fav gifs array
-    //create image for each index of array
-    //set attr for each image
-    //append each image to div with id #favorites-div
+    $("#favorites-div").empty();
+    favorites.forEach(function(favorite) {
+        const gifDiv = $("<div>");
+        const gif = $("<img>");
+        gifDiv.append(gif).addClass("gif-container");
+        gif.attr("src", favorite.still);
+        $("#favorites-div").append(gifDiv);
+        
+    })
 }
-
-//create event handler for gifs so that they are appended to div with id #favorites-div
-// $(document).on("click", ".gif-container", function() {
-//     $("#favorites-div").prepend($(this).clone());
-// })
 
